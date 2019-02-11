@@ -1,0 +1,7 @@
+[general_ubuntu]
+profile = unity-lowgfx
+
+[general]
+profile = 
+integration = true
+
