@@ -575,3 +575,5 @@ client.connect_signal("manage", function(c)
 end)
 
 awful.util.spawn("compton")
+awful.util.spawn("albert")
+awful.util.spawn("flameshot")
