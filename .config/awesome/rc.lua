@@ -18,6 +18,10 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
+local volumearc_widget = require("awesome-wm-widgets.volumearc-widget.volumearc")
+local spotify_widget = require("awesome-wm-widgets.spotify-widget.spotify")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -57,12 +61,12 @@ editor_cmd = "nvim"
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod4"
+modkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
+    awful.layout.suit.floating,
     -- awful.layout.suit.tile.left,
     -- awful.layout.suit.tile.bottom,
     -- awful.layout.suit.tile.top,
@@ -70,7 +74,7 @@ awful.layout.layouts = {
     -- awful.layout.suit.fair.horizontal,
     -- awful.layout.suit.spiral,
     -- awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
+    -- awful.layout.suit.max,
     -- awful.layout.suit.max.fullscreen,
     -- awful.layout.suit.magnifier,
     -- awful.layout.suit.corner.nw,
@@ -205,6 +209,7 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             mylauncher,
             s.mytaglist,
+            spotify_widget,
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
@@ -212,6 +217,8 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
             wibox.widget.systray(),
+            volumearc_widget,
+            battery_widget,
             mytextclock,
             s.mylayoutbox,
         },
@@ -437,6 +444,10 @@ clientbuttons = gears.table.join(
     end)
 )
 
+globalkeys = gears.table.join(globalkeys,
+    awful.key({ modkey, "Control" }, "l", function () awful.util.spawn_with_shell("~/.local/bin/lock.sh") end)
+)
+
 -- Set keys
 root.keys(globalkeys)
 -- }}}
@@ -570,7 +581,7 @@ end)
 
 client.connect_signal("manage", function(c)
     c.shape = function(cr, w, h)
-        gears.shape.partially_rounded_rect(cr, w, h, true, true, false, false, 8)   
+        gears.shape.partially_rounded_rect(cr, w, h, true, true, false, false, 12)
     end
 end)
 
