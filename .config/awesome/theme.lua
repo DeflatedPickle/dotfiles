@@ -1,13 +1,14 @@
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
+local wibox = require("wibox")
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 
-local theme = {}
+theme = {}
 
-theme.font          = "Source Code Pro 12"
+theme.font          = "Source Code Variable 12"
 
 theme.bg_normal     = "#587B7F"
 theme.bg_focus      = "#587B7F"
@@ -20,11 +21,14 @@ theme.fg_focus      = "#D3D0CB"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
-theme.useless_gap   = dpi(3)
-theme.border_width  = dpi(0)
-theme.border_normal = "#1E2019"
-theme.border_focus  = "#1E2019"
-theme.border_marked = "#1E2019"
+theme.useless_gap   = dpi(2)
+theme.border_width  = dpi(2)
+theme.border_normal = "#D3D0CB"
+theme.border_focus  = "#D3D0CB"
+theme.border_marked = "#D3D0CB"
+
+theme.wibox_border_width = dpi(2)
+theme.wibox_border_color = "#D3D0CB"
 
 -- There are other variable sets
 -- overriding the default one when

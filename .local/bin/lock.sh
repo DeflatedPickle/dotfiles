@@ -2,7 +2,7 @@
 size=$(xdpyinfo | awk '/dimensions/{print $2}')
 width=$(echo $size | cut -d "x" -f 1)
 height=$(echo $size | cut -d "x" -f 2)
-convert -size $size xc:transparent -strokewidth 0 -fill "rgba(0, 0, 0, 0.4)" -draw "roundrectangle $((width / 2 - 90)),$((height / 2 - 50)) $((width / 2 + 150)),$((height / 2 + 50)) 13,13" temp.png
+convert -size $size xc:transparent -strokewidth 0 -fill "rgba(0, 0, 0, 0.4)" -draw "rectangle $((width / 2 - 90)),$((height / 2 - 50)) $((width / 2 + 150)),$((height / 2 + 50))" temp.png
 
 i3lock \
   --show-failed-attempts \

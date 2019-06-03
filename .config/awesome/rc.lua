@@ -14,6 +14,9 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+
+local xresources = require("beautiful.xresources")
+local dpi = xresources.apply_dpi
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -172,11 +175,14 @@ awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
 
+    -- Padding
+    s.padding = { left = 4, right = 4, top = 4, bottom = 4 }
+
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
+    -- s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
@@ -193,34 +199,43 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create a tasklist widget
+    --[[
     s.mytasklist = awful.widget.tasklist {
         screen  = s,
         filter  = awful.widget.tasklist.filter.currenttags,
         buttons = tasklist_buttons
     }
+    --]]
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.left_wibar = wibox({ screen = s, stretch = false, width = 164, height = beautiful.get_font_height(nil) * 1.5, type = "normal", visible = true, ontop = true, border_width = dpi(2), border_color = "#D3D0CB" })
+    awful.placement.align(s.left_wibar, { position = "top_left", honor_padding = true })
 
     -- Add widgets to the wibox
-    s.mywibox:setup {
+    s.left_wibar:setup {
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
+            -- mylauncher,
             s.mytaglist,
-            spotify_widget,
-            s.mypromptbox,
+            -- spotify_widget,
+            -- s.mypromptbox,
         },
-        s.mytasklist, -- Middle widget
+        -- s.mytasklist, -- Middle widget
+    }
+
+    s.right_wibar = wibox({ screen = s, stretch = false, width = 460, height = beautiful.get_font_height(nil) * 1.5, type = "normal", visible = true, ontop = true, border_width = dpi(2), border_color = "#D3D0CB" })
+    awful.placement.align(s.right_wibar, { position = "top_right", honor_padding = true })
+
+    s.right_wibar:setup {
+        layout = wibox.layout.align.horizontal,
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
             wibox.widget.systray(),
             volumearc_widget,
             battery_widget,
             mytextclock,
-            s.mylayoutbox,
+            -- s.mylayoutbox,
         },
     }
 end)
@@ -581,7 +596,7 @@ end)
 
 client.connect_signal("manage", function(c)
     c.shape = function(cr, w, h)
-        gears.shape.partially_rounded_rect(cr, w, h, true, true, false, false, 12)
+        gears.shape.rectangle(cr, w, h)
     end
 end)
 
